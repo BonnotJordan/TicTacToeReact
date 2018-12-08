@@ -9,16 +9,67 @@ class App extends Component {
     super();
     this.state = {
       gameBoard: [
-          'X','O',null,
+          null,null,null,
           null,null,null,
           null,null,null,
       ],
-      playerTurn: 'x',
+      playerTurn: 'X',
       winner: null
     }
   }
   updateBoard(location,playerTurn) {
-
+      if(this.state.gameBoard[location] === 'X' || this.state.gameBoard[location] === 'O' ||this.state.winner){
+          // Impossible to move
+          return;
+      }
+      let currentGameBoard = this.state.gameBoard;
+      currentGameBoard.splice(location, 1, this.state.playerTurn);
+      this.setState({gameBoard: currentGameBoard});
+      let topRow = this.state.gameBoard[0] + this.state.gameBoard[1] + this.state.gameBoard[2];
+      if(topRow === "XXX" || topRow === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let middleRow = this.state.gameBoard[3] + this.state.gameBoard[4] + this.state.gameBoard[5];
+      if(middleRow === "XXX" || middleRow === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let bottomRow = this.state.gameBoard[6] + this.state.gameBoard[7] + this.state.gameBoard[8];
+      if(bottomRow === "XXX" || bottomRow === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let leftColumn = this.state.gameBoard[0] + this.state.gameBoard[3] + this.state.gameBoard[6];
+      if(leftColumn === "XXX" || leftColumn === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let centerColumn = this.state.gameBoard[1] + this.state.gameBoard[4] + this.state.gameBoard[7];
+      if(centerColumn === "XXX" || centerColumn === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let rightColumn = this.state.gameBoard[2] + this.state.gameBoard[5] + this.state.gameBoard[8];
+      if(rightColumn === "XXX" || rightColumn === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let diag1 = this.state.gameBoard[0] + this.state.gameBoard[4] + this.state.gameBoard[8];
+      if(diag1 === "XXX" || diag1 === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let diag2 = this.state.gameBoard[2] + this.state.gameBoard[4] + this.state.gameBoard[6];
+      if(diag2 === "XXX" || diag2 === "OOO"){
+          this.setState( { winner: this.state.playerTurn});
+          return;
+      }
+      let moves = this.state.gameBoard.join('').replace(/ /g, '');
+      if (moves.length ===9){
+          this.setState({winner: 'draw'});
+      }
+      this.setState({playerTurn: (this.state.playerTurn === 'X') ? 'O' : 'X'});
   }
   resetBoard(){
       this.setState({
@@ -27,7 +78,7 @@ class App extends Component {
               null,null,null,
               null,null,null
           ],
-          playerTurn: 'x',
+          playerTurn: 'X',
           winner: null
       });
   }
